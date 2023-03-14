@@ -19,23 +19,27 @@
 */
 
 import Route from '@ioc:Adonis/Core/Route'
+import ArticlesController from 'App/Controllers/Http/ArticlesController'
 
 Route.get('/', async ({ view }) => {
   return view.render('welcome')
 }).as('homePage')
 
-// Route.get('/news', (ctx) => {
-//   console.log(ctx)
-//   return ctx.view.render('news.view')
+// Route.get('/news', async (ctx) => {
+//   return new ArticlesController().index(ctx)
 // })
 
-Route.on('/news').render('news.view').as('news.view')
+Route.get('/news', 'ArticlesController.index').as('news.view')
 
 Route.post('/news', ({ response }) => {
   // const { email, employeeCode } = request.body()
   // return { email, employeeCode }
   return response.redirect('/news')
 }).as('news.post')
+
+Route.get('/news/create', 'ArticlesController.create').as('news.createArticleView')
+
+Route.post('/news/create', 'ArticlesController.store').as('news.createArticleData')
 
 Route.patch('/news/:id', ({ params }) => {
   return { params }
